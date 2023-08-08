@@ -1,6 +1,8 @@
+import 'package:amazonclone/common/widgets/custome_button.dart';
 import 'package:amazonclone/constants/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:amazonclone/common/widgets/custom_textfield.dart';
+
 enum Auth {
   signin,
   signup,
@@ -16,13 +18,11 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   Auth _auth = Auth.signup;
-  final _signUpFormKey=GlobalKey<FormState>();
-  final _signINFormKey=GlobalKey<FormState>();
-  final TextEditingController _emailController=new TextEditingController();
-  final TextEditingController _passwordController=new TextEditingController();
-  final TextEditingController _nameController=new TextEditingController();
-
-
+  final _signUpFormKey = GlobalKey<FormState>();
+  final _signINFormKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _nameController = new TextEditingController();
 
   @override
   void dispose() {
@@ -31,13 +31,7 @@ class _AuthScreenState extends State<AuthScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
-
-
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,82 +40,130 @@ class _AuthScreenState extends State<AuthScreen> {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            const Text(
-              'Welcome',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
 
-
-
-
-
-            ListTile(
-              title: const Text(
-                'Create Account',
-                style: TextStyle(fontWeight: FontWeight.bold),
+            children: [
+              const Text(
+                'Welcome',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
-              leading: Radio(
-                  activeColor: GlobalVariables.secondaryColor,
-                  value: Auth.signup,
-                  groupValue: _auth,
-                  onChanged: (Auth? val) {
-                    setState(() {
-                      _auth = val!;
-                    });
-                  }),
-            ),
-            if(_auth==Auth.signup)
+              ListTile(
 
+                tileColor: _auth==Auth.signup ? GlobalVariables.backgroundColor:GlobalVariables.greyBackgroundCOlor,
+
+                title: const Text(
+                  'Create Account',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                leading: Radio(
+                    activeColor: GlobalVariables.secondaryColor,
+                    value: Auth.signup,
+                    groupValue: _auth,
+                    onChanged: (Auth? val) {
+                      setState(() {
+                        _auth = val!;
+                      });
+                    }),
+              ),
+              if (_auth == Auth.signup)
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  color: GlobalVariables.backgroundColor,
+                  child: Form(
+                    key: _signUpFormKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          textInputType: TextInputType.name,
+                          controller: _nameController,
+                          hintText: 'Name',
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextField(
+                          textInputType: TextInputType.emailAddress,
+                          controller: _emailController,
+                          hintText: 'Email',
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextField(  textInputType: TextInputType.text,
+                          controller: _passwordController,
+                          hintText: 'Password',
+                        ),
+
+                        SizedBox(height: 10,),
+                        CutsomeButton(onTap: () {
+
+                        }, text: 'Sign Up')
+
+
+                      ],
+                    ),
+                  ),
+                ),
+              ListTile(
+
+
+
+                title: const Text(
+                  'Sign-In',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                leading: Radio(
+                    activeColor: GlobalVariables.secondaryColor,
+                    value: Auth.signin,
+                    groupValue: _auth,
+                    onChanged: (Auth? val) {
+                      setState(() {
+                        _auth = val!;
+                      });
+                    }),
+              ),
+
+              if(_auth==Auth.signin)
               Container(
                 padding: const EdgeInsets.all(8),
                 color: GlobalVariables.backgroundColor,
-
                 child: Form(
-                  key:_signUpFormKey ,
-                  child:Column(
+                  key: _signINFormKey,
+                  child: Column(
                     children: [
-                      CustomTextField(controller:_nameController ,hintText: 'Name',),
+
+
+                      CustomTextField(
+                        controller: _emailController,
+                        hintText: 'Email',
+                        textInputType: TextInputType.emailAddress,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CustomTextField(
+                        textInputType: TextInputType.text,
+                        controller: _passwordController,
+                        hintText: 'Password',
+                      ),
+
                       SizedBox(height: 10,),
-                      CustomTextField(controller:_emailController,hintText: 'Email', ),
-                      SizedBox(height: 10,),
-                      CustomTextField(controller:_passwordController ,hintText: 'Password',),
+                      CutsomeButton(onTap: () {
 
-
-
-
+                      }, text: 'Sign In')
 
 
                     ],
-
-
                   ),
                 ),
               ),
 
 
 
-
-
-
-
-            ListTile(
-              title: const Text(
-                'Sign-In',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              leading: Radio(
-                  activeColor: GlobalVariables.secondaryColor,
-                  value: Auth.signin,
-                  groupValue: _auth,
-                  onChanged: (Auth? val) {
-                    setState(() {
-                      _auth = val!;
-                    });
-                  }),
-            ),
-          ],
+            ],
+          ),
         ),
       )),
     );
